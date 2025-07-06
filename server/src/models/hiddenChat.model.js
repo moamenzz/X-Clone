@@ -14,4 +14,6 @@ const hiddenChatSchema = new mongoose.Schema({
   ],
 });
 
-export default mongoose.model("HiddenChat", hiddenChatSchema);
+const HiddenChatModel = mongoose.model("HiddenChat", hiddenChatSchema);
+
+export default HiddenChatModel;

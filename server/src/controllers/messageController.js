@@ -1,6 +1,6 @@
 import User from "../models/user.model.js";
 import Message from "../models/message.model.js";
-import HiddenChat from "../models/hiddenchat.model.js";
+import HiddenChatModel from "../models/hiddenChat.model.js";
 import cloudinary from "../lib/cloudinary.js";
 
 export const getAllChatHeads = async (req, res) => {
@@ -9,7 +9,7 @@ export const getAllChatHeads = async (req, res) => {
 
     const [user, hiddenChats] = await Promise.all([
       User.findById(userId),
-      HiddenChat.findOne({ userId }),
+      HiddenChatModel.findOne({ userId }),
     ]);
 
     if (!user) return res.status(404).send({ error: "User not found" });
@@ -180,9 +180,9 @@ export const hideChat = async (req, res) => {
     const userToHide = req.params.userId;
 
     // Find or create hidden chats document
-    let hiddenChats = await HiddenChat.findOne({ userId });
+    let hiddenChats = await HiddenChatModel.findOne({ userId });
     if (!hiddenChats) {
-      hiddenChats = new HiddenChat({
+      hiddenChats = new HiddenChatModel({
         userId,
         hiddenUsers: [],
       });
@@ -207,7 +207,7 @@ export const unhideChat = async (req, res) => {
     const userToUnhide = req.params.userId;
 
     // Remove user from hidden list
-    await HiddenChat.updateOne(
+    await HiddenChatModel.updateOne(
       { userId },
       { $pull: { hiddenUsers: userToUnhide } }
     );
